@@ -2,24 +2,24 @@ import java.util.Scanner;
 
 public class Game {
     private final ChessBoard chessBoard = new ChessBoard();
-    private final Player player1 = new HumanPlayer(chessBoard,'X');
+    private final Player player1 = new HumanPlayer(chessBoard, 'X');
     private Player player2;
-    private enum Status {NotEnd,Player1IsWinner, Player2IsWinner,Tie}
-    private Status status=Status.NotEnd;
+    private Status status = Status.NotEnd;
 
     void start() {
         while (true) {
-            System.out.println("Let's play a game!1P or 2P?");
-            Scanner scanner=new Scanner(System.in);
-            String num=scanner.next().toUpperCase();
+            System.out.println("-------Tic-Tac-Toe-------");
+            System.out.print("Let's play a game!1P or 2P? ");
+            Scanner scanner = new Scanner(System.in);
+            String num = scanner.next().toUpperCase();
             if (num.equals("1P")) {
-                player2=new AIPlayer(chessBoard,'O');
+                player2 = new FoolishAIPlayer(chessBoard, 'O');
             } else if (num.equals("2P")) {
-                player2=new HumanPlayer(chessBoard,'O');
-            }else{
+                player2 = new HumanPlayer(chessBoard, 'O');
+            } else {
                 continue;
             }
-            status=Status.NotEnd;
+            status = Status.NotEnd;
             chessBoard.init();
             chessBoard.show();
             while (true) {
@@ -36,8 +36,8 @@ public class Game {
                     break;
                 }
             }
-            System.out.printf("player1 wins %d turn(s),loses %d turn(s) and ties %d turn(s)\n",player1.playerWin,player1.playerLost,player1.playerTie);
-            System.out.printf("player2 wins %d turn(s),loses %d turn(s) and ties %d turn(s)\n",player2.playerWin,player2.playerLost,player2.playerTie);
+            System.out.printf("player1 wins %d turn(s),loses %d turn(s) and ties %d turn(s)\n", player1.playerWin, player1.playerLost, player1.playerTie);
+            System.out.printf("player2 wins %d turn(s),loses %d turn(s) and ties %d turn(s)\n", player2.playerWin, player2.playerLost, player2.playerTie);
         }
     }
 
@@ -50,35 +50,37 @@ public class Game {
         }
         for (int i = 0; i < 3; i++) {
             if (board[0][i] == board[1][i] && board[1][i] == board[2][i]) {
-               getWinner(board[0][i]);
+                getWinner(board[0][i]);
             }
         }
-        if(board[0][0]==board[1][1]&&board[2][2]==board[1][1]){
+        if (board[0][0] == board[1][1] && board[2][2] == board[1][1]) {
             getWinner(board[0][0]);
         }
-        if(board[0][2]==board[1][1]&&board[2][0]==board[1][1]){
+        if (board[0][2] == board[1][1] && board[2][0] == board[1][1]) {
             getWinner(board[0][2]);
         }
-        if(chessBoard.getFreeSpace().isEmpty()&& status==Status.NotEnd){
+        if (chessBoard.getFreeSpace().isEmpty() && status == Status.NotEnd) {
             System.out.println("Tie!");
-            status=Status.Tie;
+            status = Status.Tie;
             player1.playerTie++;
             player2.playerTie++;
         }
     }
 
-    private void getWinner(char chessman){
-        if (chessman == 'X') {
+    private void getWinner(char chessman) {
+        if (chessman == player1.chessman) {
             System.out.println("You win!");
-            status=Status.Player1IsWinner;
+            status = Status.Player1IsWinner;
             player1.playerWin++;
             player2.playerLost++;
-        } else if (chessman == 'O') {
+        } else if (chessman == player2.chessman) {
             System.out.println("Oh no!You lose.");
-            status=Status.Player2IsWinner;
+            status = Status.Player2IsWinner;
             player1.playerLost++;
             player2.playerWin++;
         }
     }
+
+    private enum Status {NotEnd, Player1IsWinner, Player2IsWinner, Tie}
 
 }

@@ -1,11 +1,9 @@
-public class AIPlayer extends Player{
+import java.util.ArrayList;
 
+public class FoolishAIPlayer extends Player{
 
-
-
-    public AIPlayer(ChessBoard chessBoard,char chessman) {
+    public FoolishAIPlayer(ChessBoard chessBoard, char chessman) {
         super(chessBoard,chessman);
-        this.chessBoard = chessBoard;
     }
 
     @Override
@@ -18,7 +16,8 @@ public class AIPlayer extends Player{
             throw new RuntimeException(e);
         }
 
-        int location = chessBoard.getFreeSpace().get((int) (Math.random() * chessBoard.getFreeSpace().size()));
+        ArrayList<Integer> freeSpace=chessBoard.getFreeSpace();
+        int location =freeSpace.get((int) (Math.random() *freeSpace.size()));
         chessBoard.setBoard(location / 10, location % 10, chessman);
     }
 }
